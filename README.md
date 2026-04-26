@@ -1,0 +1,3 @@
+# mango
+
+Initial repository setup.
