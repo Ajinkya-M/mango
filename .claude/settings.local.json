@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sh --version)",
+      "Bash(jq --version)",
+      "Bash(node \"D:/Ajinkya/workspace/node-projects/mango/.claude/statusline.js\")",
+      "Bash(node \"C:/Users/ajink/.claude/statusline.js\")",
+      "Bash(rm \"D:/Ajinkya/workspace/node-projects/mango/.claude/statusline.js\")",
+      "Bash(rm \"D:/Ajinkya/workspace/node-projects/mango/.claude/statusline-command.sh\")",
+      "PowerShell(cmd /c \"dir /a C:\\\\Users\\\\ajink\\\\.claude\")",
+      "PowerShell(cmd /c \"dir /a C:\\\\Users\\\\ajink\\\\.claude\\\\plugins\")",
+      "PowerShell(cmd /c \"dir /a C:\\\\Users\\\\ajink\\\\.claude\\\\plugins\\\\cache\\\\claude-plugins-official\\\\github\\\\unknown\")",
+      "mcp__plugin_github_github__list_commits",
+      "PowerShell(Stop-Process *)"
+    ]
+  }
+}
