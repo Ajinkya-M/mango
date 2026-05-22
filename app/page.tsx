@@ -139,6 +139,7 @@ export default function Home() {
   const [deliveryAddress, setDeliveryAddress] = useState("10 Downing Street, London, SW1A 2AA");
   const [orderPlacedSuccess, setOrderPlacedSuccess] = useState(false);
   const [varieties, setVarieties] = useState<MangoVariety[]>(getStoredVarieties);
+  const [selectedProduct, setSelectedProduct] = useState<MangoVariety | null>(null);
 
   // Sync products list from localStorage
   useEffect(() => {
@@ -321,42 +322,22 @@ export default function Home() {
     setOrderPlacedSuccess(false);
   };
 
-  // Pre-select mango from public view and redirect
+  // Open product detail modal from public view
   const handleSelectMangoAndLogin = (variety: MangoVariety) => {
-    // Resolve current variety stock
     const currentVar = varieties.find((v) => v.id === variety.id) || variety;
     if (currentVar.quantity === 0) {
-      alert(`${variety.name} is currently out of stock!`);
       return;
     }
-    setCart([{ variety, quantity: 1 }]);
-    setOrderPromptMsg(`Please login to order ${variety.name}`);
-    setStep("phone");
+    setSelectedProduct(currentVar);
   };
 
   // Select mango directly from inventory when logged-in
   const handleSelectMangoLoggedIn = (variety: MangoVariety) => {
     const currentVar = varieties.find((v) => v.id === variety.id) || variety;
     if (currentVar.quantity === 0) {
-      alert(`${variety.name} is currently out of stock!`);
       return;
     }
-
-    setCart((prevCart) => {
-      const existingItem = prevCart.find((item) => item.variety.id === variety.id);
-      if (existingItem) {
-        const maxStock = currentVar.quantity !== undefined ? currentVar.quantity : 999;
-        const newQty = Math.min(maxStock, existingItem.quantity + 1);
-        if (newQty === existingItem.quantity && currentVar.quantity !== undefined) {
-          alert(`You've reached the maximum available stock (${currentVar.quantity} boxes) for ${variety.name}.`);
-        }
-        return prevCart.map((item) =>
-          item.variety.id === variety.id ? { ...item, quantity: newQty } : item
-        );
-      }
-      return [...prevCart, { variety, quantity: 1 }];
-    });
-    setStep("cart");
+    setSelectedProduct(currentVar);
   };
 
   // Remove product from cart by variety ID
@@ -1155,6 +1136,114 @@ export default function Home() {
                 </svg>
                 <span className="text-[7px] font-bold tracking-wider uppercase mt-1">Cart</span>
               </button>
+            </div>
+          </div>
+        )}
+
+        {/* Product Detail Modal */}
+        {selectedProduct && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-end animate-fade-in">
+            <div className="w-full bg-white rounded-t-3xl p-6 max-h-[90vh] overflow-y-auto animate-slide-up">
+              {/* Close button */}
+              <button
+                onClick={() => setSelectedProduct(null)}
+                className="absolute top-4 right-4 w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+
+              {/* Product Image */}
+              <div className="w-full h-48 bg-slate-100 rounded-2xl flex items-center justify-center mb-6 overflow-hidden">
+                <ProductArtwork
+                  variety={selectedProduct}
+                  className="w-full h-full object-cover"
+                  fallbackClassName="w-32 h-32"
+                />
+              </div>
+
+              {/* Product Details */}
+              <div className="space-y-4 mb-6">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <h2 className="text-2xl font-extrabold text-slate-900">{selectedProduct.name}</h2>
+                    <span className="text-2xl">{selectedProduct.flag}</span>
+                  </div>
+                  <p className="text-sm text-slate-500 font-semibold">{selectedProduct.origin}</p>
+                </div>
+
+                <div className="flex gap-4">
+                  <div>
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400">Price</span>
+                    <p className="text-lg font-extrabold text-slate-900">{selectedProduct.price}</p>
+                  </div>
+                  <div>
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400">Sweetness</span>
+                    <p className="text-lg font-extrabold text-slate-900">{selectedProduct.sweetness}/5</p>
+                  </div>
+                  <div>
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400">Stock</span>
+                    <p className="text-lg font-extrabold text-slate-900">{selectedProduct.quantity || 0}</p>
+                  </div>
+                </div>
+
+                <div>
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400">About</span>
+                  <p className="text-sm text-slate-600 leading-relaxed mt-1">{selectedProduct.desc}</p>
+                </div>
+
+                <div>
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400">Season</span>
+                  <p className={`text-sm font-semibold mt-1 inline-block px-2 py-0.5 rounded-full ${
+                    selectedProduct.quantity === 0
+                      ? "bg-red-50 text-red-800 border border-red-100"
+                      : selectedProduct.season === "In Season"
+                      ? "bg-emerald-50 text-emerald-800 border border-emerald-100"
+                      : "bg-amber-50 text-amber-800 border border-amber-100"
+                  }`}>
+                    {selectedProduct.quantity === 0 ? "Out of Stock" : selectedProduct.season}
+                  </p>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setSelectedProduct(null)}
+                  className="flex-1 px-4 py-3 rounded-lg border border-slate-200 bg-white text-slate-900 font-bold hover:bg-slate-50 transition-colors"
+                >
+                  Close
+                </button>
+                <button
+                  onClick={() => {
+                    if (selectedProduct.quantity === 0) {
+                      return;
+                    }
+                    const currentVar = varieties.find((v) => v.id === selectedProduct.id) || selectedProduct;
+                    setCart((prevCart) => {
+                      const existingItem = prevCart.find((item) => item.variety.id === currentVar.id);
+                      if (existingItem) {
+                        const maxStock = currentVar.quantity !== undefined ? currentVar.quantity : 999;
+                        const newQty = Math.min(maxStock, existingItem.quantity + 1);
+                        return prevCart.map((item) =>
+                          item.variety.id === currentVar.id ? { ...item, quantity: newQty } : item
+                        );
+                      }
+                      return [...prevCart, { variety: currentVar, quantity: 1 }];
+                    });
+                    setSelectedProduct(null);
+                  }}
+                  disabled={selectedProduct.quantity === 0}
+                  className={`flex-1 px-4 py-3 rounded-lg font-bold transition-colors ${
+                    selectedProduct.quantity === 0
+                      ? "bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed"
+                      : "bg-amber-600 hover:bg-amber-700 text-white"
+                  }`}
+                >
+                  {selectedProduct.quantity === 0 ? "Sold Out" : "Add to Cart"}
+                </button>
+              </div>
             </div>
           </div>
         )}
