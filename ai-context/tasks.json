@@ -1,0 +1,67 @@
+{
+  "lastUpdated": "2026-05-25",
+  "project": "mango",
+  "items": [
+    {
+      "id": "infra-align-repo-and-vercel",
+      "title": "Align canonical GitHub repo and Vercel project",
+      "status": "pending",
+      "priority": "high",
+      "notes": [
+        "Local repo is Ajinkya-M/mango.",
+        "Current Vercel project mango-vercel is linked to Ajinkya-M/mango-vercel.",
+        "Choose one source of truth before shipping more changes."
+      ]
+    },
+    {
+      "id": "replace-demo-admin-auth",
+      "title": "Replace client-side demo admin auth with server-side protection",
+      "status": "pending",
+      "priority": "high",
+      "notes": [
+        "Current admin login uses hardcoded credentials in app/admin/page.tsx.",
+        "Admin access should be enforced on the server, not by sessionStorage."
+      ]
+    },
+    {
+      "id": "move-product-data-off-localstorage",
+      "title": "Move products and inventory to persistent server-backed storage",
+      "status": "pending",
+      "priority": "high",
+      "notes": [
+        "Catalog state is currently browser-local and not shared.",
+        "Inventory updates should persist across users and sessions."
+      ]
+    },
+    {
+      "id": "add-server-side-validation",
+      "title": "Introduce Zod validation for all server-side write paths",
+      "status": "pending",
+      "priority": "medium",
+      "notes": [
+        "This is part of the architecture rules in AGENTS.md.",
+        "Validation should be added once API routes or server actions exist."
+      ]
+    },
+    {
+      "id": "implement-real-order-flow",
+      "title": "Implement server-side order creation with stock and pricing checks",
+      "status": "pending",
+      "priority": "medium",
+      "notes": [
+        "Do not trust client-side cart totals or product prices.",
+        "Recalculate totals and validate stock on the server before accepting orders."
+      ]
+    },
+    {
+      "id": "decompose-large-client-pages",
+      "title": "Break large page components into smaller reusable modules",
+      "status": "pending",
+      "priority": "low",
+      "notes": [
+        "app/page.tsx and app/admin/page.tsx are currently large monolithic client files.",
+        "Refactoring will help once the data model and server boundaries are defined."
+      ]
+    }
+  ]
+}
