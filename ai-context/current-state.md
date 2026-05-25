@@ -1,6 +1,6 @@
 # Mango Current State
 
-Last updated: 2026-05-25 20:45 Europe/London
+Last updated: 2026-05-25 22:04 Europe/London
 
 ## Summary
 
@@ -14,8 +14,10 @@ Mango is currently a polished Next.js prototype for a mango storefront and a bas
 - Vercel team: `ajyamankar-6261's projects`
 - Vercel project: `mango-vercel`
 - Vercel project framework: `nextjs`
-- Vercel Git repo currently linked in deployment metadata: `Ajinkya-M/mango-vercel`
-- Vercel production branch currently seen in deployment metadata: `main`
+- Vercel Git repo currently linked in deployment metadata: `Ajinkya-M/mango`
+- Vercel production branch currently seen in deployment metadata: `feat/order-system`
+- Latest verified production deployment commit: `67de7c1` (`Add mango ai context files`)
+- Latest verified production deployment URL: `mango-vercel-mf7fl67h5-ajyamankar-6261s-projects.vercel.app`
 
 ## Codebase shape
 
@@ -43,7 +45,7 @@ Mango is currently a polished Next.js prototype for a mango storefront and a bas
 2. Inventory is not shared across users because it lives in each browser's local storage.
 3. Orders, pricing, and stock validation are not enforced server-side.
 4. The app does not yet follow the intended full-stack architecture documented in `AGENTS.md`.
-5. The local repo and the linked Vercel repo are currently different repositories.
+5. Production is currently tied to `feat/order-system` rather than a conventional long-lived branch like `main`.
 
 ## Tooling notes
 
@@ -55,7 +57,7 @@ Mango is currently a polished Next.js prototype for a mango storefront and a bas
 
 Build the first real backend slice:
 
-1. Choose the canonical deployment repo and align Vercel to it.
+1. Decide whether production should continue using `feat/order-system` or move to a long-lived release branch such as `main`.
 2. Add environment and data model setup.
 3. Introduce server-side auth for admin access.
 4. Move products and inventory to persistent storage.

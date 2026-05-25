@@ -36,6 +36,7 @@ Last updated: 2026-05-25
 
 - Local GitHub repo for this workspace: `Ajinkya-M/mango`
 - Current Vercel project discovered during repo inspection: `mango-vercel`
-- Current Vercel Git integration points at GitHub repo `Ajinkya-M/mango-vercel`, not `Ajinkya-M/mango`
+- Current Vercel Git integration points at GitHub repo `Ajinkya-M/mango`
+- Current verified Vercel production branch: `feat/order-system`
 
-This mismatch should be resolved before treating Vercel deploys as deploys of this exact workspace.
+The repo mismatch is resolved. The remaining deployment question is whether production should continue from `feat/order-system` or move to a more conventional branch such as `main`.

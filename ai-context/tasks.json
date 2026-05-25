@@ -5,12 +5,21 @@
     {
       "id": "infra-align-repo-and-vercel",
       "title": "Align canonical GitHub repo and Vercel project",
+      "status": "completed",
+      "priority": "high",
+      "notes": [
+        "Verified on 2026-05-25 that Vercel deployment metadata now points to Ajinkya-M/mango.",
+        "Verified production branch in Vercel metadata is feat/order-system."
+      ]
+    },
+    {
+      "id": "choose-production-branch-strategy",
+      "title": "Choose a long-term production branch strategy for Vercel",
       "status": "pending",
       "priority": "high",
       "notes": [
-        "Local repo is Ajinkya-M/mango.",
-        "Current Vercel project mango-vercel is linked to Ajinkya-M/mango-vercel.",
-        "Choose one source of truth before shipping more changes."
+        "Production is currently deploying from feat/order-system.",
+        "Decide whether to keep that branch as production or move production tracking to main."
       ]
     },
     {
